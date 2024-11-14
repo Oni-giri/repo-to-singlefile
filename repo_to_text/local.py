@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Set
+from typing import Set, Optional
 import os
 from .converter import BaseConverter
 
@@ -32,22 +32,42 @@ class LocalConverter(BaseConverter):
                 return True
         return False
 
-    def convert(self, repo_path: str) -> None:
-        """Convert local repository to text format."""
+    def convert(self, repo_path: str, subfolder: Optional[str] = None) -> None:
+        """
+        Convert local repository to text format.
+        
+        Args:
+            repo_path (str): Path to the local repository
+            subfolder (Optional[str]): Specific subfolder to process (e.g., "packages/mylib")
+        """
         repo_path = Path(repo_path)
+        
+        # If subfolder is specified, adjust the base path
+        if subfolder:
+            base_path = repo_path / subfolder
+            if not base_path.exists():
+                raise ValueError(f"Subfolder '{subfolder}' not found in repository")
+        else:
+            base_path = repo_path
+            
         ignored_patterns = self.parse_gitignore(repo_path)
         
         # Clear output file if it exists
         self.output_file.write_text('')
         
-        for root, _, files in os.walk(repo_path):
-            if '.git' in root:
+        for root, _, files in os.walk(base_path):
+            if '.git' in Path(root).parts:
                 continue
                 
             for file in files:
                 file_path = Path(root) / file
-                rel_path = file_path.relative_to(repo_path)
                 
+                # Calculate relative path based on the base_path
+                try:
+                    rel_path = file_path.relative_to(base_path)
+                except ValueError:
+                    continue
+                    
                 if self.should_ignore(str(rel_path), ignored_patterns):
                     continue
                     

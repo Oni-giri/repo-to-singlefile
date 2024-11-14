@@ -2,30 +2,24 @@
 
 A command-line tool that converts code repositories into text format, making them suitable for use as context in Large Language Models (LLMs). Supports both local repositories and GitHub remote repositories.
 
-## Installation
+## Features
 
-### Option 1: Install from PyPI (Recommended)
+- Convert local Git repositories to text format
+- Convert GitHub repositories to text format (public and private)
+- Process specific subfolders in monorepos
+- Respect `.gitignore` patterns for local repositories
+- Skip binary files automatically
+- Structured output with clear file demarcation
+- Token counting with OpenAI tokenizer
+- Cost estimation for GPT-3.5 and GPT-4
+
+## Installation
 
 ```bash
 pip install repo-to-text
 ```
 
-### Option 2: Install from source
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/repo-to-text.git
-cd repo-to-text
-```
-
-2. Install using pip in editable mode:
-```bash
-pip install -e .
-```
-
 ## Usage
-
-After installation, you can use the tool directly from the command line:
 
 ### Basic Usage
 
@@ -44,9 +38,23 @@ repo-to-text https://github.com/owner/repo output.txt
 repo-to-text https://github.com/owner/repo output.txt --github-token YOUR_GITHUB_TOKEN
 ```
 
+### Monorepo Support
+
+Process only specific subfolders in a repository:
+
+1. Local monorepo:
+```bash
+repo-to-text /path/to/repo output.txt --subfolder packages/mylib
+```
+
+2. GitHub monorepo:
+```bash
+repo-to-text https://github.com/owner/repo output.txt --subfolder packages/mylib
+```
+
 ### Output Format
 
-The generated text file will contain the contents of all text files in the repository, with clear headers separating each file:
+The generated text file contains the contents of all text files in the repository, with clear headers separating each file:
 
 ```
 ### File: src/main.py ###
@@ -58,36 +66,119 @@ The generated text file will contain the contents of all text files in the repos
 ...
 ```
 
+After processing, you'll see a summary that includes:
+- Total token count
+- Total character count
+- Estimated costs for GPT-3.5 and GPT-4 usage
+
+Example summary:
+```
+==================================================
+CONVERSION SUMMARY
+==================================================
+Total tokens: 15,234
+Total characters: 45,678
+
+Estimated costs (based on current OpenAI pricing):
+GPT-4:
+  - Input cost: $0.46
+  - Output cost: $0.91
+GPT-3.5:
+  - Input cost: $0.02
+  - Output cost: $0.03
+==================================================
+```
+
+## Configuration
+
+The tool automatically:
+- Respects `.gitignore` patterns in local repositories
+- Skips binary files
+- Processes common text file extensions:
+  - Python (.py)
+  - JavaScript (.js)
+  - Java (.java)
+  - C++ (.cpp, .h)
+  - Web (.html, .css)
+  - Documentation (.md)
+  - Config files (.yml, .yaml, .json)
+  - Shell scripts (.sh)
+  - Text files (.txt)
+  - XML files (.xml)
+
+## GitHub Authentication
+
+For private repositories, you'll need a GitHub personal access token:
+
+1. Generate a token at https://github.com/settings/tokens
+2. Use the token with the --github-token option:
+```bash
+repo-to-text https://github.com/owner/private-repo output.txt --github-token YOUR_TOKEN
+```
+
+## Error Handling
+
+The tool provides clear error messages for common issues:
+- Invalid repository paths or URLs
+- Missing subfolders
+- Permission denied errors
+- Binary file skipping
+- Token counting errors
+
 ## Development
 
 ### Setup Development Environment
 
-1. Install Poetry:
+1. Clone the repository:
 ```bash
-curl -sSL https://install.python-poetry.org | python3 -
+git clone https://github.com/yourusername/repo-to-text.git
+cd repo-to-text
 ```
 
 2. Install dependencies:
 ```bash
-poetry install
+pip install -e .
 ```
 
 ### Running Tests
 
 ```bash
-poetry run pytest
+pytest
 ```
 
-### Building the Package
+## Common Issues
 
-```bash
-poetry build
-```
+### Permission Denied
+When accessing private GitHub repositories, make sure your token has the necessary permissions:
+- For public repositories: No token needed
+- For private repositories: Token needs `repo` scope
 
-### Local Installation for Testing
+### Subfolder Not Found
+When specifying a subfolder:
+- Ensure the path is relative to the repository root
+- Use forward slashes (/) even on Windows
+- Check that the subfolder exists in the repository
 
-```bash
-pip install dist/*.whl
-```
+### Large Repositories
+For very large repositories:
+- Consider processing specific subfolders
+- Be aware of rate limits when using GitHub API
+- Monitor token costs for large codebases
 
-[Rest of the README remains the same...]
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a pull request
+
+## License
+
+This project is licensed under the MIT License
+
+## Contact
+
+- Report bugs through GitHub issues
+- Submit feature requests through GitHub issues
+- For security issues, please see SECURITY.md

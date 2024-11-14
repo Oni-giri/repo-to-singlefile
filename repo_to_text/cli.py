@@ -1,3 +1,4 @@
+# repo_to_text/cli.py
 import argparse
 import sys
 from pathlib import Path
@@ -11,7 +12,6 @@ def count_tokens(file_path: str) -> tuple[int, int]:
     Returns a tuple of (token_count, char_count).
     """
     try:
-        # Use cl100k_base encoder (used by gpt-4 and newer models)
         encoder = tiktoken.get_encoding("cl100k_base")
         
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -36,10 +36,10 @@ def print_summary(token_count: int, char_count: int) -> None:
     
     # Add cost estimates for common models
     print("\nEstimated costs (based on current OpenAI pricing):")
-    gpt4_input_cost = (token_count / 1000) * 0.03  # $0.03 per 1K tokens
-    gpt4_output_cost = (token_count / 1000) * 0.06  # $0.06 per 1K tokens
-    gpt35_input_cost = (token_count / 1000) * 0.001  # $0.001 per 1K tokens
-    gpt35_output_cost = (token_count / 1000) * 0.002  # $0.002 per 1K tokens
+    gpt4_input_cost = (token_count / 1000) * 0.03
+    gpt4_output_cost = (token_count / 1000) * 0.06
+    gpt35_input_cost = (token_count / 1000) * 0.001
+    gpt35_output_cost = (token_count / 1000) * 0.002
     
     print(f"GPT-4:")
     print(f"  - Input cost: ${gpt4_input_cost:.2f}")
@@ -50,22 +50,27 @@ def print_summary(token_count: int, char_count: int) -> None:
     print("="*50)
 
 def main():
-    parser = argparse.ArgumentParser(description='Convert a code repository to text format')
+    parser = argparse.ArgumentParser(description='Convert a code repository into text format')
     parser.add_argument('repo', help='Local path or GitHub URL of the repository')
     parser.add_argument('output', help='Output file path')
     parser.add_argument('--github-token', help='GitHub personal access token for private repos', default=None)
+    parser.add_argument('--subfolder', help='Specific subfolder to process (e.g., "packages/mylib")', default=None)
     
     args = parser.parse_args()
     
     try:
         if args.repo.startswith('http'):
             print(f"Processing GitHub repository: {args.repo}")
+            if args.subfolder:
+                print(f"Processing subfolder: {args.subfolder}")
             converter = GitHubConverter(args.output, args.github_token)
-            converter.convert(args.repo)
+            converter.convert(args.repo, subfolder=args.subfolder)
         else:
             print(f"Processing local repository: {args.repo}")
+            if args.subfolder:
+                print(f"Processing subfolder: {args.subfolder}")
             converter = LocalConverter(args.output)
-            converter.convert(args.repo)
+            converter.convert(args.repo, subfolder=args.subfolder)
             
         print(f"\nRepository content has been written to: {args.output}")
         
