@@ -1,4 +1,4 @@
-# Repo to Text
+# Repo to Single File
 
 A command-line tool that converts code repositories into text format, making them suitable for use as context in Large Language Models (LLMs). Supports both local repositories and GitHub remote repositories.
 
