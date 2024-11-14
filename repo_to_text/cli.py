@@ -1,4 +1,4 @@
-# repo_to_text/cli.py
+# repo_to_singlefile/cli.py
 import argparse
 import sys
 from pathlib import Path

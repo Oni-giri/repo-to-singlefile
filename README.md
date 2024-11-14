@@ -16,7 +16,7 @@ A command-line tool that converts code repositories into text format, making the
 ## Installation
 
 ```bash
-pip install repo-to-text
+pip install repo-to-singlefile
 ```
 
 ## Usage
@@ -25,17 +25,17 @@ pip install repo-to-text
 
 1. Convert a local repository:
 ```bash
-repo-to-text /path/to/local/repo output.txt
+repo-to-singlefile /path/to/local/repo output.txt
 ```
 
 2. Convert a public GitHub repository:
 ```bash
-repo-to-text https://github.com/owner/repo output.txt
+repo-to-singlefile https://github.com/owner/repo output.txt
 ```
 
 3. Convert a private GitHub repository:
 ```bash
-repo-to-text https://github.com/owner/repo output.txt --github-token YOUR_GITHUB_TOKEN
+repo-to-singlefile https://github.com/owner/repo output.txt --github-token YOUR_GITHUB_TOKEN
 ```
 
 ### Monorepo Support
@@ -44,12 +44,12 @@ Process only specific subfolders in a repository:
 
 1. Local monorepo:
 ```bash
-repo-to-text /path/to/repo output.txt --subfolder packages/mylib
+repo-to-singlefile /path/to/repo output.txt --subfolder packages/mylib
 ```
 
 2. GitHub monorepo:
 ```bash
-repo-to-text https://github.com/owner/repo output.txt --subfolder packages/mylib
+repo-to-singlefile https://github.com/owner/repo output.txt --subfolder packages/mylib
 ```
 
 ### Output Format
@@ -113,7 +113,7 @@ For private repositories, you'll need a GitHub personal access token:
 1. Generate a token at https://github.com/settings/tokens
 2. Use the token with the --github-token option:
 ```bash
-repo-to-text https://github.com/owner/private-repo output.txt --github-token YOUR_TOKEN
+repo-to-singlefile https://github.com/owner/private-repo output.txt --github-token YOUR_TOKEN
 ```
 
 ## Error Handling
@@ -131,8 +131,8 @@ The tool provides clear error messages for common issues:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/repo-to-text.git
-cd repo-to-text
+git clone https://github.com/yourusername/repo-to-singlefile.git
+cd repo-to-singlefile
 ```
 
 2. Install dependencies:

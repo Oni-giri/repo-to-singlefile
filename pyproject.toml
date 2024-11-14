@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "repo-to-text"
+name = "repo-to-singlefile"
 version = "0.1.0"
 description = "A tool to convert code repositories into text format for LLM context"
 authors = ["Yakitori <mers_etanche.0n@icloud.com>"]
 readme = "README.md"
-packages = [{include = "repo_to_text"}]
+packages = [{include = "repo_to_singlefile"}]
 license = "MIT"                                    # Added license
-homepage = "https://github.com/Oni-giri/repo-to-text"  # Added homepage
-repository = "https://github.com/Oni-giri/repo-to-text"  # Added repository
+homepage = "https://github.com/Oni-giri/repo-to-singlefile"  # Added homepage
+repository = "https://github.com/Oni-giri/repo-to-singlefile"  # Added repository
 keywords = ["repository", "text", "llm", "context", "converter"]  # Added keywords
 classifiers = [                                    # Added classifiers
     "Development Status :: 4 - Beta",
@@ -36,7 +36,7 @@ black = "^23.3.0"
 isort = "^5.12.0"
 
 [tool.poetry.scripts]
-repo-to-text = "repo_to_text.cli:main"
+repo-to-singlefile = "repo_to_singlefile.cli:main"
 
 [build-system]
 requires = ["poetry-core"]

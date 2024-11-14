@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="repo-to-text",
+    name="repo-to-singlefile",
     version="0.1.0",
     packages=find_packages(),
     install_requires=[
@@ -15,7 +15,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'repo-to-text=repo_converter.cli:main',
+            'repo-to-singlefile=repo_converter.cli:main',
         ],
     },
     author="Yakitori",
@@ -23,7 +23,7 @@ setup(
     description="A tool to convert code repositories into text format for LLM context",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Oni-giri/repo-to-text",
+    url="https://github.com/Oni-giri/repo-to-singlefile",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
