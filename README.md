@@ -2,6 +2,7 @@
 
 A command-line tool that converts code repositories into text format, making them suitable for use as context in Large Language Models (LLMs). Supports both local repositories and GitHub remote repositories.
 
+⚠️ This repo is compatible only with Python =< 3.11 !
 ## Features
 
 - Convert local Git repositories to text format
